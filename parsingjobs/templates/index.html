@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>My diplom</title>
+  <style type="text/css">
+div.clip {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    background: #fc0; /* Цвет фона */
+    padding: 5px; /* Поля вокруг текста */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+   }
+</style>
+
+</head>
+<body>
+<div  style="width:100%;">
+
+<div style="display:block;width:100%;">
+ 
+<div style="width:250px;float:left;">
+      <h1>Название</h1>
+     {%for i in job.title%}
+       <div class="clip">{{i}}</div>
+         {%endfor%}
+</div>
+<div style="width:250px;float:left;">
+<h1>Ссылка</h1>
+     {%for i in job.href%}
+       <div class="clip"><a href="{{i}}">Ссылка</a></div>
+         {%endfor%}
+</div>
+</div>
+<div style="width:250px;float:left;">
+<h1>Комания</h1>
+     {%for i in job.company%}
+       <div class="clip">{{i}}</div>
+         {%endfor%}
+</div>
+</div>
+<div style="width:250px;float:left;">
+<h1>Описание</h1>
+     {%for i in job.content%}
+       <div class="clip">{{i}}</div>
+         {%endfor%}
+</div>
+</div>
+
+
+</div>	
+</body>
+</html>
