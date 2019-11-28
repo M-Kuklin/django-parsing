@@ -9,8 +9,9 @@ headers = {'accept': '*/*',
 
 base_url_work_ua = 'https://www.work.ua/ru/jobs-python/?page=1'
 base_url_hh = 'https://dnepr.hh.ua/search/vacancy?L_is_autosearch=false&area=5&clusters=true&currency_code=UAH&enable_snippets=true&text=python&page=0'
+base_url_rabota_ua = 'https://rabota.ua/jobsearch/vacancy_list?keyWords=Python%20&regionId=0&pg=1'
 
-
+#########################################################################################################     
 def work_ua_parse_lxml(base_url_work_ua,headers):
     jobs_work_ua = []
     urls = []
@@ -62,10 +63,10 @@ def work_ua_parse_lxml(base_url_work_ua,headers):
                     pass
         print(len(jobs_work_ua))
     else:
-        print('ERROR or Done ' + str(request.status_code))
+        print('STATUS CODE >>>  ' + str(request.status_code))
     return jobs_work_ua    
            
-            
+#########################################################################################################     
 def hh_parse_lxml (base_url_hh,headers):
     jobs_hh = []
     urls = []
@@ -107,15 +108,68 @@ def hh_parse_lxml (base_url_hh,headers):
                     pass
         print(len(jobs_hh))
     else:
-        print('ERROR or Done ' + str(request.status_code))
+        print('STATUS CODE >>>  ' + str(request.status_code))
     return jobs_hh
-                
-            
+
+#########################################################################################################                
+def rabota_ua_parse_lxml(base_url_rabota_ua,headers):
+    jobs_rabota_ua = []
+    urls = []
+    urls.append(base_url_rabota_ua)
+    session = requests.Session()
+    request = session.get(base_url_rabota_ua,headers=headers)
+    if request.status_code == 200:
+        start = time.time()
+        soup = bs(request.content,'lxml')
+        try:
+              paggination =  soup.find_all('dl',attrs={'class','f-text-royal-blue fd-merchant f-pagination'})
+              for pagg in paggination:
+                             page = pagg.find_all('a')
+                             count = int(page[-2].text) #1,2,3,4,5,6....[9] Cледующая
+                             for i in range(1,count+1):
+                                     url = f'https://rabota.ua/jobsearch/vacancy_list?keyWords=Python%20&regionId=0&pg={i}'
+                                     if url not in urls:
+                                              urls.append(url)
+                                              
+        except:
+            pass
+        
+    for url in urls:
+        request = session.get(url,headers=headers)
+        soup = bs(request.content,'lxml')
+        articles = soup.find_all('article',attrs= {'class':'f-vacancylist-vacancyblock' })
+        for art in articles:
+            try:
+                title = art.find('a').text
+                href1 = art.find('a')['href']
+                href2 = 'https://rabota.ua'
+                href = href2+href1
+                corporation = art.find_all('p',attrs={'class':'f-vacancylist-companyname fd-merchant f-text-dark-bluegray'})
+                for corp in corporation:
+                       try:
+                        company = corp.find('a').text
+                       except:
+                           company = 'none'
+                content = art.find('p',attrs={'class':'f-vacancylist-shortdescr f-text-gray fd-craftsmen'}).text
+
+                jobs_rabota_ua.append({
+                   'title':title,
+                   'href':href,
+                   'company':company,
+                   'content':content
+                    })
+            except:
+                pass
+        print(len(jobs_rabota_ua))
+    else:
+        print('STATUS CODE >>>  ' + str(request.status_code))
+    return jobs_rabota_ua
 
             
 
 jobs_work_ua = work_ua_parse_lxml(base_url_work_ua,headers)
 jobs_hh = hh_parse_lxml(base_url_hh,headers)
+jobs_rabota_ua = rabota_ua_parse_lxml(base_url_rabota_ua,headers)
 
 dir_jobs={}
 
@@ -125,45 +179,49 @@ key_company = 'company'
 key_content = 'content'
 
 #title
-for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_title, [])
-  dir_jobs[key_title].append( jobs_work_ua[i]['title'])
 for i in range(0, len(jobs_hh)):
   dir_jobs.setdefault(key_title, [])
   dir_jobs[key_title].append( jobs_hh[i]['title'])
-#href
 for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_href, [])
-  dir_jobs[key_href].append( jobs_work_ua[i]['href'])
+  dir_jobs.setdefault(key_title, [])
+  dir_jobs[key_title].append( jobs_work_ua[i]['title'])
+for i in range(0, len(jobs_rabota_ua)):
+  dir_jobs.setdefault(key_title, [])
+  dir_jobs[key_title].append( jobs_rabota_ua[i]['title'])
+#href
 for i in range(0, len(jobs_hh)):
   dir_jobs.setdefault(key_href, [])
   dir_jobs[key_href].append( jobs_hh[i]['href'])
-#company
 for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_company, [])
-  dir_jobs[key_company].append( jobs_work_ua[i]['company'])
+  dir_jobs.setdefault(key_href, [])
+  dir_jobs[key_href].append( jobs_work_ua[i]['href'])
+for i in range(0, len(jobs_rabota_ua)):
+  dir_jobs.setdefault(key_href, [])
+  dir_jobs[key_href].append(jobs_rabota_ua[i]['href'])
+#company
 for i in range(0, len(jobs_hh)):
   dir_jobs.setdefault(key_company, [])
   dir_jobs[key_company].append( jobs_hh[i]['company'])
-#content
 for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_content, [])
-  dir_jobs[key_content].append( jobs_work_ua[i]['content'])
+  dir_jobs.setdefault(key_company, [])
+  dir_jobs[key_company].append( jobs_work_ua[i]['company'])
+for i in range(0, len(jobs_rabota_ua)):
+  dir_jobs.setdefault(key_company, [])
+  dir_jobs[key_company].append( jobs_rabota_ua[i]['company'])
+#content
 for i in range(0, len(jobs_hh)):
   dir_jobs.setdefault(key_content, [])
   dir_jobs[key_content].append( jobs_hh[i]['content'])
-
-  
-
+for i in range(0, len(jobs_work_ua)):
+  dir_jobs.setdefault(key_content, [])
+  dir_jobs[key_content].append( jobs_work_ua[i]['content'])
+for i in range(0, len(jobs_rabota_ua)):
+  dir_jobs.setdefault(key_content, [])
+  dir_jobs[key_content].append( jobs_rabota_ua[i]['content'])
 
 
    
     
-
-#print(type(jobs))
-
-
-#print (jobs_mass)
 
 def index(request):
     

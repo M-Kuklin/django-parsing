@@ -1,0 +1,61 @@
+body{
+    background: url('/static/img/trees.png');
+    }
+
+.header{
+background: url('/static/img/dot-grid.png');
+height:100px;
+margin-bottom:7px; 
+border-radius: 50px 50px 0px 0px;
+box-shadow:  4px 0 15px 0px #A9A9A9;
+text-align: center
+
+}
+
+div.clip {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    background: url('/static/img/trees.png');
+    padding: 7px; /* Поля вокруг текста */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+   }
+
+
+.block1{ 
+width:400px;
+float:left;
+background: url('/static/img/dot-grid.png');
+border: 2px solid #D4D4D4;
+border-radius: 0px 0 0;
+box-shadow:  4px 0 15px 0px #A9A9A9;
+text-align: left
+margin-left: 20%;
+}
+.block2{ 
+width:250px;
+float:left;
+background: url('/static/img/dot-grid.png');
+border: 2px solid #D4D4D4; /* Ширина и цвет границ*/
+border-radius: 0px; /* Радиус границ*/
+box-shadow: 0 0 15px #A9A9A9;
+text-align: center
+}
+.block3{ 
+width:250px;
+float:left;
+background: url('/static/img/dot-grid.png');
+border: 2px solid #D4D4D4; /* Ширина и цвет границ*/
+border-radius: 0px; /* Радиус границ*/
+box-shadow: 0 0 15px #A9A9A9;
+text-align: left
+}
+.block4{ 
+width:587px;
+float:left;
+background: url('/static/img/dot-grid.png');
+border: 2px solid #D4D4D4; /* Ширина и цвет границ*/
+border-radius: 0px 0px; /* Радиус границ*/
+box-shadow: 0 0 15px #A9A9A9;
+text-align: center
+}
+
