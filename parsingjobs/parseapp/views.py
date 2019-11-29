@@ -173,55 +173,27 @@ jobs_rabota_ua = rabota_ua_parse_lxml(base_url_rabota_ua,headers)
 
 dir_jobs={}
 
-key_title = 'title'
-key_href = 'href'
-key_company = 'company'
-key_content = 'content'
 
-#title
-for i in range(0, len(jobs_hh)):
-  dir_jobs.setdefault(key_title, [])
-  dir_jobs[key_title].append( jobs_hh[i]['title'])
-for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_title, [])
-  dir_jobs[key_title].append( jobs_work_ua[i]['title'])
-for i in range(0, len(jobs_rabota_ua)):
-  dir_jobs.setdefault(key_title, [])
-  dir_jobs[key_title].append( jobs_rabota_ua[i]['title'])
-#href
-for i in range(0, len(jobs_hh)):
-  dir_jobs.setdefault(key_href, [])
-  dir_jobs[key_href].append( jobs_hh[i]['href'])
-for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_href, [])
-  dir_jobs[key_href].append( jobs_work_ua[i]['href'])
-for i in range(0, len(jobs_rabota_ua)):
-  dir_jobs.setdefault(key_href, [])
-  dir_jobs[key_href].append(jobs_rabota_ua[i]['href'])
-#company
-for i in range(0, len(jobs_hh)):
-  dir_jobs.setdefault(key_company, [])
-  dir_jobs[key_company].append( jobs_hh[i]['company'])
-for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_company, [])
-  dir_jobs[key_company].append( jobs_work_ua[i]['company'])
-for i in range(0, len(jobs_rabota_ua)):
-  dir_jobs.setdefault(key_company, [])
-  dir_jobs[key_company].append( jobs_rabota_ua[i]['company'])
-#content
-for i in range(0, len(jobs_hh)):
-  dir_jobs.setdefault(key_content, [])
-  dir_jobs[key_content].append( jobs_hh[i]['content'])
-for i in range(0, len(jobs_work_ua)):
-  dir_jobs.setdefault(key_content, [])
-  dir_jobs[key_content].append( jobs_work_ua[i]['content'])
-for i in range(0, len(jobs_rabota_ua)):
-  dir_jobs.setdefault(key_content, [])
-  dir_jobs[key_content].append( jobs_rabota_ua[i]['content'])
+###создание словаря##### 
+m=['title','href','company','content']
+
+for i in range(0,4):
+    for j in range(0,len(jobs_hh)):
+        dir_jobs.setdefault(m[i], [])
+        dir_jobs[m[i]].append( jobs_hh[j][m[i]])
+
+for i in range(0,4):
+    for j in range(0,len(jobs_work_ua)):
+        dir_jobs.setdefault(m[i], [])
+        dir_jobs[m[i]].append( jobs_work_ua[j][m[i]])
+
+for i in range(0,4):
+    for j in range(0,len(jobs_rabota_ua)):
+        dir_jobs.setdefault(m[i], [])
+        dir_jobs[m[i]].append( jobs_rabota_ua[j][m[i]])
 
 
-   
-    
+
 
 def index(request):
     
